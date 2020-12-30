@@ -87,3 +87,4 @@ Qt*-linux*.tar.*
 libs/airmapd/include/boost
 libs/qmlglsink/gst-plugins-good/
 src/GPS/Drivers
+src/GPS/Drivers
