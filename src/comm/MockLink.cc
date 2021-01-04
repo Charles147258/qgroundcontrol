@@ -675,6 +675,8 @@ void MockLink::_handleParamRequestList(const mavlink_message_t& msg)
     mavlink_param_request_list_t request;
 
     mavlink_msg_param_request_list_decode(&msg, &request);
+    qDebug() << "message with param request list is received, and message id: " << msg.msgid
+                 << " target system: " << request.target_system << "target_component: " << request.target_component;
 
     Q_ASSERT(request.target_system == _vehicleSystemId);
     Q_ASSERT(request.target_component == MAV_COMP_ID_ALL);

@@ -4274,6 +4274,18 @@ void Vehicle::updateFlightDistance(double distance)
     _flightDistanceFact.setRawValue(_flightDistanceFact.rawValue().toDouble() + distance);
 }
 
+void Vehicle::requestAllParameters()
+{
+    mavlink_message_t msg;        //  定义MAVLink消息
+    mavlink_msg_param_request_list_pack_chan(                //在chan通道上打包消息
+                _mavlink->getSystemId(),            // 本机系统id
+                _mavlink->getComponentId(),         // 本机组件id
+                priorityLink()->mavlinkChannel(),   // 选择通道
+                &msg, _id, MAV_COMP_ID_ALL);        // 对应的消息，所要发送的消息的目标系统id，目标组件id
+    sendMessageOnLink(priorityLink(), msg);         // 发送消息
+    qDebug() << "============= sned Vehicle::requestAllParameters ============ " << _id << MAV_COMP_ID_ALL;
+}
+
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 

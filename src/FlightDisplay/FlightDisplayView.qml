@@ -557,7 +557,7 @@ Item {
             property bool _virtualJoystickEnabled: QGroundControl.settingsManager.appSettings.virtualJoystick.rawValue
         }
 
-        ToolStrip {
+        ToolStrip {           
             visible:            (activeVehicle ? activeVehicle.guidedModeSupported : true) && !QGroundControl.videoManager.fullScreen
             id:                 toolStrip
 
@@ -570,6 +570,34 @@ Item {
             z:                  _mapAndVideo.z + 4
             maxHeight:          parent.height - toolStrip.y + (_flightVideo.visible ? (_flightVideo.y - parent.height) : 0)
             title:              qsTr("Fly")
+
+            Rectangle{
+                anchors.left:       toolStrip.left              // 左侧对齐
+                anchors.top:        toolStrip.bottom            // 顶部位于toolStrip控件底部
+                anchors.topMargin:  _margins * 50             // 设置间隙
+                width:              250                      // 长和高设置
+                height:             30
+                color:              "red"                     // 底色设置
+                radius:             5                           // 矩形圆角半径
+                visible:            true                        // 设置为可见
+                z:                  _panel.z + 4                // 设置层级
+                // 填充文本
+                Text {
+                anchors.fill:   parent
+                text:           qsTr("Request all Parameter")
+                color:          "white"
+                     }
+                // 设置鼠标点击事件
+                MouseArea{
+                anchors.fill:   parent
+                onClicked: {
+                    console.log("Request all Parameter is clicked!")                // 在控制台打印log
+                // 在单例QGroundControl的MultiVehicleManager对象下有一个当前正处于活动状态的activeVehicle，调用该方法
+                   QGroundControl.multiVehicleManager.activeVehicle.requestAllParameters()
+                           }
+                         }
+            }
+
 
             property bool _anyActionAvailable: _guidedController.showStartMission || _guidedController.showResumeMission || _guidedController.showChangeAlt || _guidedController.showLandAbort
             property var _actionModel: [
