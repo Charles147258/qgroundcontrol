@@ -1132,3 +1132,10 @@ contains (CONFIG, QGC_DISABLE_BUILD_SETUP) {
 #
 
 include(QGCInstaller.pri)
+
+TRANSLATIONS += zh_en.ts
+lupdate_only{
+    sources+= \
+        src/FlightDisplay/* \
+        src/ui/*.qml \
+}
