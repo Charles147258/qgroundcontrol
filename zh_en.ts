@@ -2539,37 +2539,37 @@ sudo apt-get remove modemmanager</source>
     <message>
         <location filename="src/api/QGCCorePlugin.cc" line="121"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>常用</translation>
     </message>
     <message>
         <location filename="src/api/QGCCorePlugin.cc" line="125"/>
         <source>Comm Links</source>
-        <translation type="unfinished"></translation>
+        <translation>通信链接</translation>
     </message>
     <message>
         <location filename="src/api/QGCCorePlugin.cc" line="129"/>
         <source>Offline Maps</source>
-        <translation type="unfinished"></translation>
+        <translation>离线地图</translation>
     </message>
     <message>
         <location filename="src/api/QGCCorePlugin.cc" line="133"/>
         <source>MAVLink</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="src/api/QGCCorePlugin.cc" line="137"/>
         <source>Console</source>
-        <translation type="unfinished"></translation>
+        <translation>编译</translation>
     </message>
     <message>
         <location filename="src/api/QGCCorePlugin.cc" line="140"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>帮助</translation>
     </message>
     <message>
         <location filename="src/api/QGCCorePlugin.cc" line="145"/>
         <source>Mock Link</source>
-        <translation type="unfinished"></translation>
+        <translation>模拟连接</translation>
     </message>
     <message>
         <location filename="src/api/QGCCorePlugin.cc" line="148"/>
@@ -2584,22 +2584,22 @@ sudo apt-get remove modemmanager</source>
     <message>
         <location filename="src/api/QGCCorePlugin.cc" line="160"/>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>相机</translation>
     </message>
     <message>
         <location filename="src/api/QGCCorePlugin.cc" line="162"/>
         <source>Video Stream</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="src/api/QGCCorePlugin.cc" line="164"/>
         <source>Health</source>
-        <translation type="unfinished"></translation>
+        <translation>健康</translation>
     </message>
     <message>
         <location filename="src/api/QGCCorePlugin.cc" line="165"/>
         <source>Vibration</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="src/api/QGCCorePlugin.cc" line="260"/>
