@@ -231,7 +231,7 @@ MainWindow::MainWindow()
 #endif
 
     connect(_ui.actionStatusBar,  &QAction::triggered, this, &MainWindow::showStatusBarCallback);
-
+    connect(_ui.indoor,           &QAction::triggered, this, &MainWindow::selectIndoorMode);
     connect(&windowNameUpdateTimer, &QTimer::timeout, this, &MainWindow::configureWindowName);
     windowNameUpdateTimer.start(15000);
     emit initStatusChanged(tr("Done"), Qt::AlignLeft | Qt::AlignBottom, QColor(62, 93, 141));
@@ -542,7 +542,15 @@ void MainWindow::_showAdvancedUIChanged(bool advanced)
     if (advanced) {
         menuBar()->addMenu(_ui.menuFile);
         menuBar()->addMenu(_ui.menuWidgets);
+        menuBar()->addMenu(_ui.menuoptions);
     } else {
         menuBar()->clear();
     }
+}
+
+void MainWindow::selectIndoorMode(bool in)
+{
+    qDebug()<<"selected indoor mode"<< in;
+    qgcApp()->_loadCurrentStyleSheet();
+    QGCPalette::setGlobalTheme(in ? QGCPalette::Dark : QGCPalette::Light);
 }

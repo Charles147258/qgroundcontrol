@@ -45,13 +45,14 @@
     </size>
    </property>
   </widget>
+  <widget class="QStatusBar" name="statusBar"/>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -68,10 +69,18 @@
      <string>Widgets</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuoptions">
+    <property name="title">
+     <string>options</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="indoor"/>
+    <addaction name="actionoutdoor"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuWidgets"/>
+   <addaction name="menuoptions"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
@@ -99,6 +108,25 @@
    </property>
    <property name="text">
     <string>Replay Flight Data</string>
+   </property>
+  </action>
+  <action name="indoor">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>indoor</string>
+   </property>
+  </action>
+  <action name="actionoutdoor">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>outdoor</string>
    </property>
   </action>
  </widget>

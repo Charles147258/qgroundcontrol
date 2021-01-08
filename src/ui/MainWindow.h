@@ -99,6 +99,7 @@ protected slots:
      * @brief Enable/Disable Status Bar
      */
     void showStatusBarCallback(bool checked);
+    void selectIndoorMode(bool in);
 
 signals:
     void initStatusChanged(const QString& message, int alignment, const QColor &color);
