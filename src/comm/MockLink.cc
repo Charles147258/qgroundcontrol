@@ -438,6 +438,9 @@ void MockLink::_handleIncomingMavlinkBytes(const uint8_t* bytes, int cBytes)
         }
 
         switch (msg.msgid) {
+        case MAVLINK_MSG_ID_PREFLIGHT_SELFCHECK:
+            _handleSelfCheck(msg);
+            break;
         case MAVLINK_MSG_ID_HEARTBEAT:
             _handleHeartBeat(msg);
             break;
@@ -648,6 +651,8 @@ void MockLink::_handleParamRequestList(const mavlink_message_t& msg)
     mavlink_param_request_list_t request;
 
     mavlink_msg_param_request_list_decode(&msg, &request);
+    qDebug() << "message with param request list is received, and message id: " << msg.msgid
+                 << " target system: " << request.target_system << "target_component: " << request.target_component;
 
     Q_ASSERT(request.target_system == _vehicleSystemId);
     Q_ASSERT(request.target_component == MAV_COMP_ID_ALL);
@@ -1377,4 +1382,18 @@ void MockLink::_sendADSBVehicles(void)
                                        0);                                          // Squawk code
 
     respondWithMavlinkMessage(responseMsg);
+}
+
+void MockLink::_handleSelfCheck(const mavlink_message_t& msg)
+{
+    mavlink_preflight_selfcheck_t selfCheck;
+    mavlink_msg_preflight_selfcheck_decode(&msg, &selfCheck);
+    if (selfCheck.target_system == _vehicleSystemId){
+        mavlink_message_t msg;
+        mavlink_msg_preflight_selfcheck_ack_pack_chan(_vehicleSystemId,
+                                                      _vehicleComponentId,
+                                                      _mavlinkChannel,
+                                                      &msg, 1);
+        respondWithMavlinkMessage(msg);
+    }
 }

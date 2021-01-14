@@ -511,6 +511,33 @@ QGCView {
             buttonVisible:      [ _useChecklist, _guidedController.showTakeoff || !_guidedController.showLand, _guidedController.showLand && !_guidedController.showTakeoff, true, true, true ]
             buttonEnabled:      [ _useChecklist && _activeVehicle, _guidedController.showTakeoff, _guidedController.showLand, _guidedController.showRTL, _guidedController.showPause, _anyActionAvailable ]
 
+            Rectangle{
+                            anchors.left:       toolStrip.left              // 左侧对齐
+                            anchors.top:        toolStrip.bottom            // 顶部位于toolStrip控件底部
+                            anchors.topMargin:  _margins * 10               // 设置间隙
+
+                            width:              200                       // 长和高设置
+                            height:             30
+                            color:              "red"                     // 底色设置
+                            radius:             8                           // 矩形圆角半径
+                            visible:            true                        // 设置为可见
+                            z:                  _panel.z + 4                // 设置层级
+
+                            // 填充文本
+                            Text {
+                                anchors.fill:   parent
+                                text:           qsTr("SelfCheck")//qsTr("Request all Parameter")
+                                color:          "white"
+                            }
+
+                            // 设置鼠标点击事件
+                            MouseArea{
+                                anchors.fill:   parent
+                                onClicked: {
+                                    QGroundControl.multiVehicleManager.activeVehicle.selfCheck();
+                                }
+                            }
+                        }
             property bool _anyActionAvailable: _guidedController.showStartMission || _guidedController.showResumeMission || _guidedController.showChangeAlt || _guidedController.showLandAbort
             property var _actionModel: [
                 {

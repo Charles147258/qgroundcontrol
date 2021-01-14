@@ -740,6 +740,9 @@ void Vehicle::_mavlinkMessageReceived(LinkInterface* link, mavlink_message_t mes
     case MAVLINK_MSG_ID_WIND:
         _handleWind(message);
         break;
+    case MAVLINK_MSG_ID_PREFLIGHT_SELFCHECK_ACK:
+            _handleSelfCheckAck(message);
+            break;
 #endif
     }
 
@@ -3757,4 +3760,22 @@ VehicleDistanceSensorFactGroup::VehicleDistanceSensorFactGroup(QObject* parent)
     _rotationYaw270Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
     _rotationPitch90Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
     _rotationPitch270Fact.setRawValue(std::numeric_limits<float>::quiet_NaN());
+}
+
+void Vehicle::selfCheck()
+{
+    mavlink_message_t msg;
+    mavlink_msg_preflight_selfcheck_pack_chan(_mavlink->getSystemId(),
+                                                 _mavlink->getComponentId(),
+                                                 priorityLink()->mavlinkChannel(),
+                                                 &msg, _id);
+    sendMessageOnLink(priorityLink(), msg);
+    qDebug() << "=== vehivle send preflight_selfcheck message === " << _id;
+}
+
+void Vehicle::_handleSelfCheckAck(mavlink_message_t &message)
+{
+    mavlink_preflight_selfcheck_ack_t ack;
+    mavlink_msg_preflight_selfcheck_ack_decode(&message, &ack);
+    qDebug() << "=== Vehicle receive selfcheck_ack_t === " << ack.ack;
 }

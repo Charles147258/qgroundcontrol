@@ -611,6 +611,9 @@ public:
     Q_INVOKABLE void triggerCamera(void);
     Q_INVOKABLE void sendPlan(QString planFile);
 
+    Q_INVOKABLE void selfCheck(void);
+    void _handleSelfCheckAck(mavlink_message_t& message);
+
 #if 0
     // Temporarily removed, waiting for new command implementation
     /// Test motor
