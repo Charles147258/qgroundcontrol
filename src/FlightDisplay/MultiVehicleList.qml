@@ -58,6 +58,34 @@ Item {
                 font.pointSize: ScreenTools.smallFontPointSize
             }
 
+            Row{
+                spacing:            _margin
+                QGCButton{
+                  text:       qsTr("arm")
+                  onClicked:  guidedActionsController.confirmAction(guidedActionsController.actionMVArm)
+                }
+                QGCButton{
+                  text:       qsTr("disarm")
+                  onClicked:  guidedActionsController.confirmAction(guidedActionsController.actionMVDisarm)
+                }
+              }
+
+             Row{
+                spacing:            _margin
+                QGCButton{
+                  text:       qsTr("Takeoff")
+                  onClicked:  guidedActionsController.confirmAction(guidedActionsController.actionMVTakeoff)
+                }
+                QGCButton{
+                  text:       qsTr("Land")
+                  onClicked:  guidedActionsController.confirmAction(guidedActionsController.actionMVLand)
+                }
+                QGCButton{
+                  text:       qsTr("RTL")
+                  onClicked:  guidedActionsController.confirmAction(guidedActionsController.actionMVRTL)
+                }
+            }
+
             Row {
                 spacing:            _margin
 

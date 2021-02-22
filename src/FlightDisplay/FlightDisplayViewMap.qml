@@ -174,7 +174,7 @@ FlightMap {
 
         delegate: MapPolyline {
             line.width: 3
-            line.color: "red"
+            line.color: _activeVehicle ? _activeVehicle.trajectoryColor : "red"
             z:          QGroundControl.zOrderTrajectoryLines
             path: [
                 object.coordinate1,

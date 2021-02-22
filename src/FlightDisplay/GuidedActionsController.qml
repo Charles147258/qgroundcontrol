@@ -94,6 +94,12 @@ Item {
     readonly property int actionVtolTransitionToFwdFlight:  20
     readonly property int actionVtolTransitionToMRFlight:   21
 
+    readonly property int actionMVArm:                      22
+    readonly property int actionMVDisarm:                   23
+    readonly property int actionMVRTL:                      24
+    readonly property int actionMVTakeoff:                  25
+    readonly property int actionMVLand:                     26
+
     property bool showEmergenyStop:     _guidedActionsEnabled && !_hideEmergenyStop && _vehicleArmed && _vehicleFlying
     property bool showArm:              _guidedActionsEnabled && !_vehicleArmed
     property bool showDisarm:           _guidedActionsEnabled && _vehicleArmed && !_vehicleFlying
@@ -331,6 +337,31 @@ Item {
             confirmDialog.message = vtolTransitionMRMessage
             confirmDialog.hideTrigger = true
             break
+        case actionMVArm:
+            confirmDialog.title = qsTr("All Arm")
+            confirmDialog.message = qsTr("command all vehicle to arm.")
+            confirmDialog.hideTrigger = true
+            break;
+        case actionMVDisarm:
+            confirmDialog.title = qsTr("All Disarm")
+            confirmDialog.message = qsTr("command all vehicle to disarm.")
+            confirmDialog.hideTrigger = true
+            break;
+        case actionMVTakeoff:
+            confirmDialog.title = qsTr("All Takeoff")
+            confirmDialog.message = qsTr("command all vehicle to takeoff.")
+            confirmDialog.hideTrigger = true
+            break;
+        case actionMVRTL:
+            confirmDialog.title = qsTr("All RTL")
+            confirmDialog.message = qsTr("command all vehicle to RTL.")
+            confirmDialog.hideTrigger = true
+            break;
+        case actionMVLand:
+            confirmDialog.title = qsTr("All Land")
+            confirmDialog.message = qsTr("command all vehicle to Land.")
+            confirmDialog.hideTrigger = true
+            break;
         default:
             console.warn("Unknown actionCode", actionCode)
             return
@@ -411,6 +442,37 @@ Item {
         case actionVtolTransitionToMRFlight:
             _activeVehicle.vtolInFwdFlight = false
             break
+        case actionMVArm:
+            rgVehicle = QGroundControl.multiVehicleManager.vehicles
+            for (i = 0; i < rgVehicle.count; i++){
+                rgVehicle.get(i).armed = true
+            }
+            break
+        case actionMVDisarm:
+            rgVehicle = QGroundControl.multiVehicleManager.vehicles
+            for (i = 0; i < rgVehicle.count; i++){
+                rgVehicle.get(i).armed = false
+            }
+            break
+        case actionMVLand:
+            rgVehicle = QGroundControl.multiVehicleManager.vehicles
+            for (i = 0; i < rgVehicle.count; i++){
+                rgVehicle.get(i).guidedModeLand()
+            }
+            break
+        case actionMVRTL:
+            rgVehicle = QGroundControl.multiVehicleManager.vehicles
+            for (i = 0; i < rgVehicle.count; i++){
+                rgVehicle.get(i).guidedModeRTL()
+            }
+            break
+        case actionMVTakeoff:
+            rgVehicle = QGroundControl.multiVehicleManager.vehicles
+            for (i = 0; i < rgVehicle.count; i++){
+                rgVehicle.get(i).guidedModeTakeoff(actionAltitudeChange)
+            }
+            break
+
         default:
             console.warn(qsTr("Internal error: unknown actionCode"), actionCode)
             break

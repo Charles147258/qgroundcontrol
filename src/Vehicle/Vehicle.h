@@ -376,6 +376,10 @@ public:
 
     ~Vehicle();
 
+    static quint16 connectedVehicleCount;
+    static QList<QColor> trajectoryColors;
+    static QMap<int, int>  vehicleIdAndConnectedSeq;
+
     /// Sensor bits from sensors*Bits properties
     enum MavlinkSysStatus {
         SysStatusSensor3dGyro =                 MAV_SYS_STATUS_SENSOR_3D_GYRO,
@@ -497,6 +501,7 @@ public:
     Q_PROPERTY(QString              priorityLinkName        READ priorityLinkName       WRITE setPriorityLinkByName     NOTIFY priorityLinkNameChanged)
     Q_PROPERTY(QVariantList         links                   READ links                                                  NOTIFY linksChanged)
     Q_PROPERTY(LinkInterface*       priorityLink            READ priorityLink                                           NOTIFY priorityLinkNameChanged)
+    Q_PROPERTY(QColor               trajectoryColor        READ trajectoryColor                                       CONSTANT)
 
     // Vehicle state used for guided control
     Q_PROPERTY(bool flying                  READ flying NOTIFY flyingChanged)                               ///< Vehicle is flying
@@ -547,6 +552,7 @@ public:
     Q_PROPERTY(quint64  vehicleUID                  READ vehicleUID                 NOTIFY vehicleUIDChanged)
     Q_PROPERTY(QString  vehicleUIDStr               READ vehicleUIDStr              NOTIFY vehicleUIDChanged)
 
+    QColor               trajectoryColor();
     /// Resets link status counters
     Q_INVOKABLE void resetCounters  ();
 

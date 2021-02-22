@@ -77,6 +77,23 @@ const char* Vehicle::_temperatureFactGroupName =    "temperature";
 const char* Vehicle::_clockFactGroupName =          "clock";
 const char* Vehicle::_distanceSensorFactGroupName = "distanceSensor";
 
+quint16 Vehicle::connectedVehicleCount = 0;
+        QList<QColor> Vehicle::trajectoryColors = {
+        QColor(0x00,0x00,0x00),     //Black unused
+        QColor(0x69,0x69,0x69),     //DimGray
+        QColor(0xFF,0x00,0x00),     //red
+        QColor(0xFF,0xFF,0x00),     //yellow
+        QColor(0x00,0x80,0x00),     //forgived green
+        QColor(0xEE,0x82,0xEE),     //Violet
+        QColor(0xFF,0xFF,0x80),     //Navy
+        QColor(0xF0,0x80,0x80),     //LightCoral
+        QColor(0xFF,0xD7,0x00),     //Gold
+        QColor(0x80,0x00,0x80),     //Purple
+        QColor(0xFF,0xC0,0xCB),     //Pink
+        QColor(0xBD,0xB7,0x6B),     //DarkKhaki
+        };
+QMap<int, int> Vehicle::vehicleIdAndConnectedSeq;
+
 Vehicle::Vehicle(LinkInterface*             link,
                  int                        vehicleId,
                  int                        defaultComponentId,
@@ -195,6 +212,26 @@ Vehicle::Vehicle(LinkInterface*             link,
     , _clockFactGroup(this)
     , _distanceSensorFactGroup(this)
 {
+   Vehicle::connectedVehicleCount++;
+   if(Vehicle::vehicleIdAndConnectedSeq.isEmpty()){
+       Vehicle::vehicleIdAndConnectedSeq.insert(_id, Vehicle::connectedVehicleCount);
+   }
+   else{
+       QMap<int, int>::iterator tmp;
+       int querySeq = 1;
+       bool found =false;
+       for(tmp=Vehicle::vehicleIdAndConnectedSeq.begin();tmp != Vehicle::vehicleIdAndConnectedSeq.end();tmp++){
+           if(tmp.value() != querySeq){
+               found =true;
+               Vehicle::vehicleIdAndConnectedSeq.insert(_id, querySeq);
+               break;
+           }
+           querySeq++;
+       }
+       if(!found)
+           Vehicle::vehicleIdAndConnectedSeq.insert(_id, Vehicle::connectedVehicleCount);
+    }
+
     connect(_joystickManager, &JoystickManager::activeJoystickChanged, this, &Vehicle::_loadSettings);
     connect(qgcApp()->toolbox()->multiVehicleManager(), &MultiVehicleManager::activeVehicleAvailableChanged, this, &Vehicle::_loadSettings);
 
@@ -270,6 +307,15 @@ Vehicle::Vehicle(LinkInterface*             link,
     // Create camera manager instance
     _cameras = _firmwarePlugin->createCameraManager(this);
     emit dynamicCamerasChanged();
+}
+
+QColor Vehicle::trajectoryColor()
+{
+    if(Vehicle::connectedVehicleCount < Vehicle::trajectoryColors.count()){
+        return Vehicle::trajectoryColors.at(Vehicle::vehicleIdAndConnectedSeq.find(_id).value());
+    }else{
+        return QColor(0xFF, Vehicle::connectedVehicleCount * 0xF, Vehicle::connectedVehicleCount * 8);
+   }
 }
 
 // Disconnected Vehicle for offline editing
@@ -467,6 +513,8 @@ void Vehicle::_commonInit(void)
 Vehicle::~Vehicle()
 {
     qCDebug(VehicleLog) << "~Vehicle" << this;
+    Vehicle::connectedVehicleCount--;
+    Vehicle::vehicleIdAndConnectedSeq.take(_id);
 
     delete _missionManager;
     _missionManager = NULL;
