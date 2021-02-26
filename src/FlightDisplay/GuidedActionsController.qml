@@ -27,6 +27,44 @@ import QGroundControl.FlightMap                 1.0
 Item {
     id: _root
 
+    //****************************************************
+    property var selectedVehicleList: []
+    function selectedVehicleCtl(id, insert)
+    {
+      //@Param     id:vehicle's         id 0: all
+      //@Param     insert                0:remove   1:insert
+      if(id === 0){
+          var i;
+          if(insert){
+              selectedVehicleList = []
+              var vehicles = QGroundControl.multiVehicleManager.vehicles
+              for(i = 0; i < vehicles.count;i++){
+                  selectedVehicleList.push(vehicles.get(i).id)
+              }
+          }else{
+                selectedVehicleList = []
+          }
+      }else{
+              var found = false
+              var tmp = []
+              for(i = 0; i < selectedVehicleList.length; i++){
+                  if(selectedVehicleList[i]  === id){
+                      if(!insert)
+                          continue;
+                          tmp.push(selectedVehicleList[i])
+                          found = true
+                      }else{
+                          tmp.push(selectedVehicleList[i])
+                      }
+                  }
+              selectedVehicleList = tmp
+              if(!found && insert)
+              selectedVehicleList.push(id)
+      }
+    }
+
+    //********************************************************
+
     property var missionController
     property var confirmDialog
     property var actionList
@@ -371,8 +409,9 @@ Item {
 
     // Executes the specified action
     function executeAction(actionCode, actionData, actionAltitudeChange) {
-        var i;
+        var i, j;
         var rgVehicle;
+        var vehicle;
         switch (actionCode) {
         case actionRTL:
             _activeVehicle.guidedModeRTL()
@@ -430,10 +469,16 @@ Item {
             _activeVehicle.pauseVehicle()
             _activeVehicle.guidedModeChangeAltitude(actionAltitudeChange)
             break
-        case actionMVPause:
+        case actionMVPause:           
             rgVehicle = QGroundControl.multiVehicleManager.vehicles
-            for (i = 0; i < rgVehicle.count; i++) {
-                rgVehicle.get(i).pauseVehicle()
+            for (j = 0; j < selectedVehicleList.length; j++) {
+                for(i = 0; i < rgVehicle.count; i++){
+                    vehicle = rgVehicle.get(i)
+                  if(selectedVehicleList[j] === vehicle.id){
+                      vehicle.pauseVehicle()
+                      break;
+                      }
+                }
             }
             break
         case actionVtolTransitionToFwdFlight:
@@ -444,32 +489,62 @@ Item {
             break
         case actionMVArm:
             rgVehicle = QGroundControl.multiVehicleManager.vehicles
-            for (i = 0; i < rgVehicle.count; i++){
-                rgVehicle.get(i).armed = true
+            for (j = 0; j < selectedVehicleList.length; j++) {
+                for(i = 0; i < rgVehicle.count; i++){
+                    vehicle = rgVehicle.get(i)
+                  if(selectedVehicleList[j] === vehicle.id){
+                      vehicle.armed = true
+                      break;
+                      }
+                }
             }
             break
         case actionMVDisarm:
             rgVehicle = QGroundControl.multiVehicleManager.vehicles
-            for (i = 0; i < rgVehicle.count; i++){
-                rgVehicle.get(i).armed = false
+            for (j = 0; j < selectedVehicleList.length; j++) {
+                for(i = 0; i < rgVehicle.count; i++){
+                    vehicle = rgVehicle.get(i)
+                  if(selectedVehicleList[j] === vehicle.id){
+                      vehicle.armed = false
+                      break;
+                      }
+                }
             }
             break
         case actionMVLand:
             rgVehicle = QGroundControl.multiVehicleManager.vehicles
-            for (i = 0; i < rgVehicle.count; i++){
-                rgVehicle.get(i).guidedModeLand()
+            for (j = 0; j < selectedVehicleList.length; j++) {
+                for(i = 0; i < rgVehicle.count; i++){
+                    vehicle = rgVehicle.get(i)
+                  if(selectedVehicleList[j] === vehicle.id){
+                      vehicle.guidedModeLand()
+                      break;
+                      }
+                }
             }
             break
         case actionMVRTL:
             rgVehicle = QGroundControl.multiVehicleManager.vehicles
-            for (i = 0; i < rgVehicle.count; i++){
-                rgVehicle.get(i).guidedModeRTL()
+            for (j = 0; j < selectedVehicleList.length; j++) {
+                for(i = 0; i < rgVehicle.count; i++){
+                    vehicle = rgVehicle.get(i)
+                  if(selectedVehicleList[j] === vehicle.id){
+                      vehicle.guidedModeRTL()
+                      break;
+                      }
+                }
             }
             break
         case actionMVTakeoff:
             rgVehicle = QGroundControl.multiVehicleManager.vehicles
-            for (i = 0; i < rgVehicle.count; i++){
-                rgVehicle.get(i).guidedModeTakeoff(actionAltitudeChange)
+            for (j = 0; j < selectedVehicleList.length; j++) {
+                for(i = 0; i < rgVehicle.count; i++){
+                    vehicle = rgVehicle.get(i)
+                  if(selectedVehicleList[j] === vehicle.id){
+                      vehicle.guidedModeTakeoff(actionAltitudeChange)
+                      break;
+                      }
+                }
             }
             break
 
